@@ -1,7 +1,7 @@
 <?php
 
 
-class ImageText_m extends MY_Model{
+class Image_text_m extends MY_Model{
 	
 	
 	public $_table = 'imageText';

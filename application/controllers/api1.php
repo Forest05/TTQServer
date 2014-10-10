@@ -39,7 +39,7 @@ class Api1 extends REST_Controller
 		header("Content-type: application/json; charset=utf-8");
 		
 		$this->load->model('hall_m');
-		$this->load->model('imageText_m');
+		$this->load->model('image_text_m','imageText');
 	}
 	
 	function firstTimeOpened_get(){
@@ -47,24 +47,26 @@ class Api1 extends REST_Controller
 		$hall = $this->hall_m->get(1);
 		$data['hall']=$hall;		
 		
-		$imageTexts = $this->imageText_m->get_many_by('hallId',1);
+		// imageTexts
+		$imageTexts = $this->imageText->get_many_by('hallId',1);
 		$data['imageTexts']=$imageTexts;
 		
-		$array = array('status'=>1,'data'=>$data);
-   		$response = json_encode($array);		
 		
-   		echo $response;
-
+		// arts
+		$exhibitionId = $hall['defExhibitionId'];
+		$query = $this->db->query("
+		select * 
+from art 
+where exhibitionId=$exhibitionId");
+		
+		$arts = $query->result_array();
+		
+		$data['arts'] = $arts;
+		
+		return $this->output_results($data);
 	}
 	
-	function firstTimeOpened2_get(){
 	
-		
-		 $array = array('status'=>1,'data'=>'sdss');
-   		 $response = json_encode($array);		
-		echo $response;
-//		return $this->output_results($hall);
-	}
 	/**
 	 * 
 	 * 用户登录, 用的是login命令
