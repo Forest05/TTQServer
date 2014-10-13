@@ -86,25 +86,21 @@ where exhibitionId=$exhibitionId");
 		
 		if(empty($username) || empty($password)){
 
-   			return output_response('-1','没有用户名或密码');
+   			$status = 401;
+			$msg = '参数不全';
+			return $this->output_error($status,$msg);
 		}
 
-		$json = $this->user_m->login($username, $password);
-			
-		$response = json_decode($json,true);
-		
-		if(empty($response['error'])){
-			return $this->output_results($response);
+		$results = $this->user->get_by(array('username'=>$username,'password'=>$password));
+		//用户名或密码错误
+		if(empty($results)){
+			$status = 1001;
+			$msg = '用户名或密码错误';
+			return $this->output_error($status,$msg);
 		}
-		else{
-			$error = array('status'=>$response['code'],'msg'=>$response['error']);
 		
-			$error = json_encode($error);
-
-			echo $error;
 		
-			return $error;
-		}
+		return $this->output_results($results);
 	
 	}
 	
@@ -158,8 +154,9 @@ where exhibitionId=$exhibitionId");
 		$count = $this->user->count_by('username',$inputs['username']);
 		
 		if($count>0){
-			//用户名已经有了
-			return $this->output_results(-1002);
+			$status = 401;
+			$msg = '用户名已经注册';
+			return $this->output_error($status,$msg);
 			
 		}
 		else{
@@ -716,7 +713,7 @@ where exhibitionId=$exhibitionId");
     * 如果成功:   status & data
     * @param id $results
     */
-   private function output_results($results,$errorMsg=''){
+ private function output_results($results,$errorMsg=''){
    	
    	if ($results<0){
    			$error = array('status'=>$results,'msg'=>$errorMsg);
@@ -726,8 +723,7 @@ where exhibitionId=$exhibitionId");
    	}
    	else{
    		    $array = array('status'=>1,'data'=>$results);
-
-   		    $response = json_encode($array);
+			$response = json_encode($array);
 			
 			$data['response']=$response;
 			$this->load->view('response',$data);
@@ -737,6 +733,24 @@ where exhibitionId=$exhibitionId");
    	
    }
    
+   //
+   private function output_success(){
+   		 $array = array('status'=>1,'data'=>(object)array());
+			$response = json_encode($array);
+			
+			$data['response']=$response;
+			$this->load->view('response',$data);
+			
+			return $response;
+   }
+   
+   private function output_error($status,$errorMsg=''){
+  			 $error = array('status'=>$status,'msg'=>$errorMsg);
+   			$response = json_encode($error);
+			echo $response;
+			return $response;
+   }
+	 
 
    
    // --------------- TEST -----------------

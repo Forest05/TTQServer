@@ -61,26 +61,9 @@ class ApiTest extends CI_Controller{
 	}
 	
 	
-	function user_post(){
-		
-//		$this->article_model->insert(array('body'=>'Woot!', 'title'=>'My thoughts'), FALSE);
-		
-		$array = array('username'=>'131111112','password'=>'111');
+	function testLogin(){
 
-		$count = $this->user->count_by('username',$array['username']);
-		
-		if($count>0){
-			//用户名已经有了
-			
-		}
-		else{
-			$id = $this->user->insert($array);
-			
-			$result = $this->user->get($id);
-			
-		
-		}
-		
+		$url = '';
 
 	}
 	
