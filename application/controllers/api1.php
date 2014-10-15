@@ -52,11 +52,26 @@ class Api1 extends REST_Controller
 		$data['imageTexts']=$imageTexts;
 		
 		
-		// arts
 		$exhibitionId = $hall['defExhibitionId'];
+		//exhibition
+
 		$query = $this->db->query("
 		select * 
+from exhibition 
+where id=$exhibitionId");
+		
+		$results = $query->result_array();
+		$data['exhibition'] = $results[0];
+		
+		
+		// arts
+
+		
+		$query = $this->db->query("
+		select art.*, author.name as aname, author.name_en as aname_en,author.description as adescription, author.description_en as adescription_en, author.avatarUrl
 from art 
+left join author
+on art.authorId = author.id
 where exhibitionId=$exhibitionId");
 		
 		$arts = $query->result_array();

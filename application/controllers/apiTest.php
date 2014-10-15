@@ -34,14 +34,11 @@ class ApiTest extends CI_Controller{
 
 	function index() {
 
-		echo 'kqtest';
+		echo 'apiTest';
 		
 	}
 	
-	function test(){
-		
-//		$url = ''
-	}
+
 	
 	function user(){
 		
@@ -63,28 +60,39 @@ class ApiTest extends CI_Controller{
 	
 	function testLogin(){
 
-		$url = '';
+		header("Content-type: text/html; charset=utf-8");
+		
+		$url = 'http://localhost/ttq/index.php/api1/login';
+		
+		$post = array('username'=>'sssss','password'=>'111');
+	
+		$post = json_encode($post);
+		
+		
+		$response = $this->get($url,$post);
+		
+		echo 'response'.$response;
 
 	}
 	
-//
-//	function testReg(){
-//		
-//		header("Content-type: text/html; charset=utf-8");
-//		
-//		$url = 'http://localhost/kq/index.php/kqunionapi/couponAccepted/';
-//		
-//		$post = array('username'=>'sss','password'=>'111');
-//	
-//		$post = json_encode($post);
-//		
-//		
-//		$response = $this->post($url,$post);
-//		
-//		echo 'response'.$response;
-//	
-//		
-//	}
+
+	function testReg(){
+		
+		header("Content-type: text/html; charset=utf-8");
+		
+		$url = 'http://localhost/ttq/index.php/api1/user';
+		
+		$post = array('username'=>'sssss','password'=>'111');
+	
+		$post = json_encode($post);
+		
+		
+		$response = $this->post($url,$post);
+		
+		echo 'response'.$response;
+	
+		
+	}
 	
 	function test(){
 //		$url = HOST."/users?keys=phone,username";
@@ -100,7 +108,20 @@ class ApiTest extends CI_Controller{
 
 //		echo decodeUnicode($this->coupon_m->addInShop('539d8cd9e4b0a98c8733f8dc', '539d8817e4b0a98c8733f287'))	;
 	}
+	private function get($url){
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+//		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->header);
 	
+		$output = curl_exec($ch);
+		curl_close($ch);
+		
+		return $output;
+	}
 	
 	private	function post($url='',$objJson=''){
 		$ch = curl_init();
@@ -115,10 +136,5 @@ class ApiTest extends CI_Controller{
 		
 		return $output;
 	}
-	
-	private	function post2($url='',$objJson=''){
-		
-		
-		return $objJson;
-	}
+
 }
