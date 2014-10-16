@@ -61,6 +61,7 @@ from exhibition
 where id=$exhibitionId");
 		
 		$results = $query->result_array();
+		
 		$data['exhibition'] = $results[0];
 		
 		
@@ -79,6 +80,21 @@ where exhibitionId=$exhibitionId");
 		$data['arts'] = $arts;
 		
 		return $this->output_results($data);
+	}
+	
+	public function updatedTime_get(){
+	
+//		$date = ''
+	$query = $this->db->query("
+select *
+from updateInfo");
+	//
+		
+		$results = $query->result_array();
+		
+		return $this->output_results($results[0]);
+		
+		
 	}
 	
 	
@@ -106,6 +122,8 @@ where exhibitionId=$exhibitionId");
 			return $this->output_error($status,$msg);
 		}
 
+		$this->load->model('user_m','user');
+		
 		$results = $this->user->get_by(array('username'=>$username,'password'=>$password));
 		//用户名或密码错误
 		if(empty($results)){
@@ -131,9 +149,13 @@ where exhibitionId=$exhibitionId");
    		
    		if(!empty($id)){
 
-   			$result = $this->user->get($id);
-   	
-   			return $this->output_results($result);
+   			$user = $this->user->get($id);
+   			
+   			$query = $this->db->query("SELECT artId FROM favArt WHERE uid = $id");
+			$results = $query->result_array();	
+   			
+			$user['favArts'] = $results;
+   			return $this->output_results($user);
 
    		}
    		else{
@@ -182,6 +204,21 @@ where exhibitionId=$exhibitionId");
 			return $this->output_results($result);
 		}
   			
+   }
+   
+   public function updateAvatar_post(){
+   
+   	$uid = $this->post('uid');
+   	$base64Str = $this->post('avatar');
+   	
+//   	$img = base64_decode($avatar);
+//	file_put_contents('public/uploads/1.jpg', $img);
+   	
+   	$this->load->model('user_m','user');
+   	$this->user->update($uid,array('avatar'=>$base64Str));
+   	
+   	
+   	return $this->output_success();
    }
    
    /**

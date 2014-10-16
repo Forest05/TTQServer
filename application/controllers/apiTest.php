@@ -62,19 +62,35 @@ class ApiTest extends CI_Controller{
 
 		header("Content-type: text/html; charset=utf-8");
 		
-		$url = 'http://localhost/ttq/index.php/api1/login';
+		$url = 'http://localhost/ttq/index.php/api1/login/username/sssss/password/111';
 		
-		$post = array('username'=>'sssss','password'=>'111');
+//		$post = array('username'=>'sssss','password'=>'111');
 	
 		$post = json_encode($post);
 		
 		
-		$response = $this->get($url,$post);
+		$response = $this->get($url);
 		
-		echo 'response'.$response;
+		echo $response;
 
 	}
 	
+	function testGetUser(){
+
+		header("Content-type: text/html; charset=utf-8");
+		
+		$url = 'http://localhost/ttq/index.php/api1/user/id/1';
+		
+//		$post = array('username'=>'sssss','password'=>'111');
+	
+		$post = json_encode($post);
+		
+		
+		$response = $this->get($url);
+		
+		echo $response;
+
+	}
 
 	function testReg(){
 		
@@ -89,7 +105,7 @@ class ApiTest extends CI_Controller{
 		
 		$response = $this->post($url,$post);
 		
-		echo 'response'.$response;
+		echo $response;
 	
 		
 	}
