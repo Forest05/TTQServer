@@ -67,7 +67,6 @@ where id=$exhibitionId");
 		
 		// arts
 
-		
 		$query = $this->db->query("
 		select art.*, author.name as aname, author.name_en as aname_en,author.description as adescription, author.description_en as adescription_en, author.avatarUrl
 from art 
@@ -78,6 +77,19 @@ where exhibitionId=$exhibitionId");
 		$arts = $query->result_array();
 		
 		$data['arts'] = $arts;
+		
+		//param
+		$query = $this->db->query("
+		select * from param");
+		
+		$paramresults = $query->result_array();
+		
+		foreach ($paramresults as $row) {
+			$params[$row['name']] = $row['value'];
+		}
+		
+		$data['params'] = $params;
+		
 		
 		return $this->output_results($data);
 	}
@@ -219,6 +231,46 @@ from updateInfo");
    	
    	
    	return $this->output_success();
+   }
+   
+   
+   public function param_get(){
+//   	$query = $this->db->query("
+//		select * from param");
+//		
+//		$results = $query->result_array();
+		
+   		$query = $this->db->query("
+		select * from param");
+		
+		$paramresults = $query->result_array();
+		
+		foreach ($paramresults as $row) {
+			$params[$row['name']] = $row['value'];
+		}
+		
+//		$data['params'] = $params;
+   	
+		return $this->output_results($params);
+   }
+   
+   public function param_post(){
+   
+   		$minDistance = $this->post('minDistance');
+   		$maxDistance = $this->post('maxDistance');
+   		$query = $this->db->query("
+		update param set value=$minDistance where name='minDistance'");
+   		
+		$query = $this->db->query("
+		update param set value=$maxDistance where name='maxDistance'");
+
+		$query = $this->db->query("
+		update updateInfo 
+SET
+version=version+1");
+		
+		return $this->output_success();
+   		
    }
    
    /**

@@ -110,6 +110,26 @@ class ApiTest extends CI_Controller{
 		
 	}
 	
+	function testRedirect(){
+	
+		$this->load->view('helloworld');
+	}
+	
+	function testParam(){
+		header("Content-type: text/html; charset=utf-8");
+		
+		$url = 'http://localhost/ttq/index.php/api1/param';
+		
+		$post = array('minDistance'=>'2.5','maxDistance'=>'3');
+	
+		$post = json_encode($post);
+		
+		
+		$response = $this->post($url,$post);
+		
+		echo $response;
+	
+	}
 	function test(){
 //		$url = HOST."/users?keys=phone,username";
 //		echo $this->avoslibrary->get($url);
