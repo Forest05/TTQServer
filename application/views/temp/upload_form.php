@@ -14,7 +14,8 @@
 
 <input type="submit" value="upload" />
 
-</form>
+
+<?php echo form_close();?>
 
 </body>
 </html>
