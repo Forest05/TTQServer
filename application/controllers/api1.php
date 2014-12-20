@@ -289,18 +289,22 @@ version=version+1");
    			
    		 $this->output_results($result);
    		 
-   		 $this->output->enable_profiler($this->config->item('profile_enabled'));
+//   		 $this->output->enable_profiler($this->config->item('profile_enabled'));
  
    	
    }
    
-   public function exhibition_get(){
-   	
-   		$id = $this->get('id');
-   	
-   }
+ 
+ 	public function art_get(){
+ 		$artId = $this->input->get('id');
+ 		
+ 		
+ 	}  
    
-   
+ 	public function likeArt_post(){
+ 	
+ 	}
+ 	
    /** 
     * 返回优惠券的详情, 包括shop和shopBranches
     * @param id
